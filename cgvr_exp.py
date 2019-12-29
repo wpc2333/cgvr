@@ -17,7 +17,7 @@ import time
 #m = 50
 
 
-dt_root = '/home/vision/data/cgvr/'
+dt_root = '../data/cgvr/'
 
 def converge(dname, loss, l_value):
     #dname = 'ijcnn1'
@@ -71,14 +71,14 @@ def converge(dname, loss, l_value):
     # cfg_dict['s_lbfgs'] = config
 
     config = {
-        'max_iter':[str(max_iter)],
-        'seed':['1'],
+        'max_iter':[str(max_iter)],#最大迭代次数
+        'seed':['1'],#随机数种子
         #'m':['50'],
-        'm':['5','10','50','100','150'],
-        'lr':['1e-3'],
-        'loss':[loss],
+        'm':['5','10','50','100','150'],#随机采样数
+        'lr':['1e-3'], #影响参数
+        'loss':[loss],#损失函数
         'L':['1'],
-        'lambda':[l_value]
+        'lambda':[l_value] #正则项
     }
     cfg_dict['cgvr'] = config
 
@@ -90,7 +90,7 @@ def converge(dname, loss, l_value):
 
             print input
 
-            cmd_str = '/home/vision/cppfile/cgvr/main '
+            cmd_str = './main '
             for k,v in input.items():
                 cmd_str += str(k) + ' ' + str(v) + ' '
 
@@ -190,7 +190,7 @@ def generalization(loss,dname):
 
             print input
 
-            cmd_str = '/home/vision/cppfile/cgvr/main '
+            cmd_str = './main '
             for k,v in input.items():
                 cmd_str += str(k) + ' ' + str(v) + ' '
 
@@ -220,8 +220,9 @@ if __name__ == '__main__':
     if not is_classified:
         #datasets = ['gisette']
         #datasets = ['w8a']
-        datasets = ['a9a']
-        #datasets = ['HIGGS']
+        #datasets = ['covtype'] 
+        #datasets = ['a9a']
+        datasets = [sys.argv[2]]
         #datasets = ['breast-cancer']
         #datasets = ['ijcnn1']
         #loss = ['hinge']
