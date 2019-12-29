@@ -3,7 +3,7 @@
 from run_utils import grid_generate,run
 import sys
 import time
-
+import os
 #generate the parameter config
 
 #dt = /home/vision/data/svrg/w8a
@@ -23,52 +23,54 @@ def converge(dname, loss, l_value):
     #dname = 'ijcnn1'
     #dname = 'covtype'
     #print l_value
+    if not os.path.exists(loss):
+        os.makedirs(loss)
     fname = '%s/%s-%s-test.txt' %(loss,dname,l_value[-1])
-    result_f = open(fname,'w',0)
+    result_f = open(fname,'w',1)
     max_iter = 25
 
     cfg_dict = {}
 
     #sgd config file
-    # config = {
-    #     'max_iter':[str(max_iter)],
-    #     'lr':['1e-3','1e-4','1e-5'],
-    #     'seed':['1'],
-    #     'loss':[loss],
-    #     'lambda':[l_value]
-    # }
-    # cfg_dict['sgd'] = config
-    #
-    # config = {
-    #     'max_iter':[str(max_iter)],
-    #     'seed':['1'],
-    #     'loss':[loss],
-    #     'lambda':[l_value]
-    # }
-    # cfg_dict['cg'] = config
-    #
-    # config = {
-    #     'max_iter':[str(max_iter)],
-    #     'lr':['1e-3','1e-4','1e-5'],
-    #     'seed':['1'],
-    #     #'m':['50'], # empricial settings
-    #     'm':['5','10','50','100','150'],
-    #     'loss':[loss],
-    #     'lambda':[l_value]
-    # }
-    # cfg_dict['svrg'] = config
-    #
-    # config = {
-    #     'max_iter':[str(max_iter)],
-    #     'lr':['1e-3','1e-4','1e-5'],
-    #     'seed':['1'],
-    #     #'m':['50'],
-    #     'm':['5','10','50','100','150'],
-    #     'L':['10'],
-    #     'loss':[loss],
-    #     'lambda':[l_value]
-    # }
-    # cfg_dict['s_lbfgs'] = config
+    config = {
+        'max_iter':[str(max_iter)],
+        'lr':['1e-3','1e-4','1e-5'],
+        'seed':['1'],
+        'loss':[loss],
+        'lambda':[l_value]
+    }
+    cfg_dict['sgd'] = config
+    
+    config = {
+        'max_iter':[str(max_iter)],
+        'seed':['1'],
+        'loss':[loss],
+        'lambda':[l_value]
+    }
+    cfg_dict['cg'] = config
+    
+    config = {
+        'max_iter':[str(max_iter)],
+        'lr':['1e-3','1e-4','1e-5'],
+        'seed':['1'],
+        #'m':['50'], # empricial settings
+        'm':['5','10','50','100','150'],
+        'loss':[loss],
+        'lambda':[l_value]
+    }
+    cfg_dict['svrg'] = config
+    
+    config = {
+        'max_iter':[str(max_iter)],
+        'lr':['1e-3','1e-4','1e-5'],
+        'seed':['1'],
+        #'m':['50'],
+        'm':['5','10','50','100','150'],
+        'L':['10'],
+        'loss':[loss],
+        'lambda':[l_value]
+    }
+    cfg_dict['s_lbfgs'] = config
 
     config = {
         'max_iter':[str(max_iter)],#最大迭代次数
@@ -82,35 +84,36 @@ def converge(dname, loss, l_value):
     }
     cfg_dict['cgvr'] = config
 
-    for name,config in cfg_dict.items()[:1]:
+    for name,config in list(cfg_dict.items())[:1]:
         for input in grid_generate(config):
             input['dt'] = dname
             input['name'] = name
             input['task'] = 'converge'
 
-            print input
+            print (input)
 
             cmd_str = './main '
             for k,v in input.items():
                 cmd_str += str(k) + ' ' + str(v) + ' '
 
-            print cmd_str
+            print(cmd_str)
 
             result = run(cmd_str)
-            last_l = ''
+            last_l = ""
             for l in result:
-                print l
+                l = bytes.decode(l)
+                print(l)
                 last_l = l
 
             #read the running results
-            result_f.write(last_l + '\n')
+            result_f.write(last_l+ "\n")
 
     result_f.close()
 
 def generalization(loss,dname):
     #dname = 'ijcnn1'
     #dname = 'covtype'
-    #print l_value
+    #print( l_value
     fname = '%s/%s-acc-test.txt' %(loss,dname)
     result_f = open(fname,'w',0)
     max_iter = 25
@@ -188,18 +191,18 @@ def generalization(loss,dname):
 
             input['task'] = 'generalization'
 
-            print input
+            print (input)
 
             cmd_str = './main '
             for k,v in input.items():
                 cmd_str += str(k) + ' ' + str(v) + ' '
 
-            print cmd_str
+            print (cmd_str)
 
             result = run(cmd_str)
             last_l = ''
             for l in result:
-                print l
+                print( l)
                 last_l = l
 
             #read the running results
@@ -214,7 +217,7 @@ is_classified = False
 if __name__ == '__main__':
 
     if len(sys.argv) < 2:
-        print 'no loss param ...'
+        print ('no loss param ...')
         exit(-1)
 
     if not is_classified:
@@ -222,7 +225,7 @@ if __name__ == '__main__':
         #datasets = ['w8a']
         #datasets = ['covtype'] 
         #datasets = ['a9a']
-        datasets = [sys.argv[2]]
+        #datasets = [sys.argv[2]]
         #datasets = ['breast-cancer']
         #datasets = ['ijcnn1']
         #loss = ['hinge']
@@ -230,8 +233,8 @@ if __name__ == '__main__':
         loss = [sys.argv[1]]
         #l_value = ['0']
         #l_value = ['1e2'] #lambda value
-        #datasets = ['a9a','covtype','w8a','ijcnn1','SUSY','HIGGS']
-        #loss = ['ridge','logistic','hinge']
+        datasets = ['a9a','covtype','w8a','ijcnn1','SUSY','HIGGS']
+        loss = ['ridge','logistic','hinge']
         l_value = ['1e-4','1e-6'] #lambda value
 
         for l in loss:
@@ -244,11 +247,11 @@ if __name__ == '__main__':
         #datasets = ['covtype']
         #datasets = ['ijcnn1']
         #datasets = ['breast-cancer']
-        loss = [sys.argv[1]]
+        #loss = [sys.argv[1]]
         #loss = ['ridge']
         #loss = ['logistic']
 
-        #loss = ['ridge','logistic','hinge']
+        loss = ['ridge','logistic','hinge']
 
         # datasets = []
         # for i in range(1,10):

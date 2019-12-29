@@ -8,7 +8,7 @@ import time
 from sklearn import metrics
 import sys
 
-dt_root = '/home/vision/data/cgvr/'
+dt_root = '../data/cgvr/'
 
 def scikit_exp(dname,lbd_set, f, is_linear = False):
     """

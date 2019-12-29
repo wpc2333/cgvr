@@ -7,7 +7,7 @@ import numpy as np
 split  the original traning into train and validation sets.
 """
 
-dt_root = '/home/vision/data/cgvr/'
+dt_root = '../data/cgvr/'
 
 
 def split(fname):
@@ -26,9 +26,9 @@ def split(fname):
     #print Y
     #print np.unique(Y)
 
-    f_va = open(dt_root + fname + '.v','w')
-    f_tr = open(dt_root + fname + '.r','w')
-    f_te = open(dt_root + fname + '.t','w')
+    f_va = open(dt_root + fname + '.v','wb')
+    f_tr = open(dt_root + fname + '.r','wb')
+    f_te = open(dt_root + fname + '.t','wb')
 
     i = 0
     for x,y in zip(X,Y):
@@ -61,5 +61,5 @@ def split(fname):
 datasets = ['a9a','covtype','w8a','ijcnn1','SUSY','HIGGS']
 
 for d in datasets:
-    print d
+    print(d)
     split(d)

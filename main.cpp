@@ -17,7 +17,7 @@ vector<double> value_list; // a list of minimun value
 
 ss_map config;
 
-string &trim(string &s)
+string &trim(string &s)//删除空格
 {
   if (s.empty())
     return s;
@@ -69,26 +69,26 @@ int load_svmlight(const char *fname, mat &X, mat &Y, int n_dim)
     map<int, double> ins;
     double target;
     // cout << iss.str() << endl;
-    iss >> target;
+    iss >> target;//标签的值
     // cout << target << endl;
 
-    while (iss >> idx >> dummy >> value)
+    while (iss >> idx >> dummy >> value)//获得列数与对应的值
     {
       // cout << idx << " " << value << endl;
       ins[idx] = value;
       if (idx > max_idx)
-        max_idx = idx;
+        max_idx = idx;//获得所有输入数据的最大列数
     }
-    ins_list.push_back(ins);
-    tar_list.push_back(target);
+    ins_list.push_back(ins);//存储数据X部分
+    tar_list.push_back(target);//存储数据Y部分
   }
   in.close();
 
   int rows = ins_list.size();
   int cols = max(max_idx, n_dim);
 
-  X = zeros(rows, cols);
-  Y = zeros(rows, 1);
+  X = zeros(rows, cols);//初始化矩阵
+  Y = zeros(rows, 1);//初始化结果矩阵
 
   map<int, double> feature;
   map<int, double>::iterator it, it_end;
@@ -115,7 +115,7 @@ int load_svmlight(const char *fname, mat &X, mat &Y, int n_dim)
   //cout<<Y.t()<<endl;
   //cout<<X<<endl;
 
-  X = join_rows(X, ones(rows, 1));
+  X = join_rows(X, ones(rows, 1));//添加偏移项
 
   cout << "load the data " << X.n_rows << "  " << X.n_cols << endl;
 
@@ -561,14 +561,14 @@ mat cgvr(mat &X, mat &Y)
       umat idx(s, 1);
       for (i = 0; i < s; i++)
       {
-        idx(i, 0) = (int)uniform_real(n - 1); //数据统一规范化
+        idx(i, 0) = (int)uniform_real(n - 1); //随即抽取一定的数据序列
       }
       mat x_t = X.rows(idx);
       mat y_t = Y.rows(idx);
 
-      StepFunc sf(x_t, y_t, x, p);
+      StepFunc sf(x_t, y_t, x, p);//函数
       //StepFunc sf(X,Y,x,p);
-      double alpha = line_search(sf, 1);
+      double alpha = line_search(sf, 1);//线性搜索
 
       x += alpha * p;
 

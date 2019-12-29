@@ -69,7 +69,7 @@ def estimate_auc(pred, Y):
         if abs(v - last_v) > 1e-6:
             e_idx = i
             base_value = ranks[b_idx]
-            for k in xrange(b_idx,e_idx):
+            for k in range(b_idx,e_idx):
                 ranks[k] = base_value + (e_idx - b_idx - 1)/2.0
             b_idx = e_idx
 
@@ -79,7 +79,7 @@ def estimate_auc(pred, Y):
     #process the last range
     e_idx = n
     base_value = ranks[b_idx]
-    for k in xrange(b_idx,e_idx):
+    for k in range(b_idx,e_idx):
         ranks[k] = base_value + (e_idx - b_idx - 1)/2.0
 
     #print ranks
