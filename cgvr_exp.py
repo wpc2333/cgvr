@@ -4,6 +4,7 @@ from run_utils import grid_generate,run
 import sys
 import time
 import os
+from multiprocessing import Pool
 #generate the parameter config
 
 #dt = /home/vision/data/svrg/w8a
@@ -114,8 +115,10 @@ def generalization(loss,dname):
     #dname = 'ijcnn1'
     #dname = 'covtype'
     #print( l_value
+    if not os.path.exists(loss):
+        os.makedirs(loss)
     fname = '%s/%s-acc-test.txt' %(loss,dname)
-    result_f = open(fname,'w',0)
+    result_f = open(fname,'w',1)
     max_iter = 25
 
     cfg_dict = {}
@@ -202,6 +205,7 @@ def generalization(loss,dname):
             result = run(cmd_str)
             last_l = ''
             for l in result:
+                l = bytes.decode(l)
                 print( l)
                 last_l = l
 
@@ -211,8 +215,8 @@ def generalization(loss,dname):
     result_f.close()
 
 
-#is_classified = True
-is_classified = False
+is_classified = True
+# is_classified = False
 
 if __name__ == '__main__':
 
@@ -266,7 +270,22 @@ if __name__ == '__main__':
                 generalization(l,d)
 
 
+        # pool = Pool(processes = 2)
+        # # 维持执行的进程总数为processes，当一个进程执行完毕后会添加新的进程进去
+        # for l in loss:
+        #     for d in datasets:
+        #         pool.apply_async(generalization, args=(l,d))      
+        # pool.close()
+        # #调用join之前，先调用close函数，否则会出错。执行完close后不会有新的进程加入到pool,join函数等待所有子进程结束
+        # pool.join()
 
+
+        l_value = ['1e-4','1e-6'] #lambda value
+
+        for l in loss:
+            for v in l_value:
+                for d in datasets:
+                    converge(d,l,v)
 
 
 
