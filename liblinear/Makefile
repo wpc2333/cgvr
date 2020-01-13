@@ -16,11 +16,11 @@ lib: linear.o tron.o blas/blas.a
 	fi; \
 	$(CXX) $${SHARED_LIB_FLAG} linear.o tron.o blas/blas.a -o liblinear.so.$(SHVER)
 
-train: tron.o linear.o train.c blas/blas.a
-	$(CXX) $(CFLAGS) -o train train.c tron.o linear.o $(LIBS)
+train: tron.o linear.o train.cpp blas/blas.a
+	$(CXX) $(CFLAGS) -o train train.cpp tron.o linear.o $(LIBS)
 
-predict: tron.o linear.o predict.c blas/blas.a
-	$(CXX) $(CFLAGS) -o predict predict.c tron.o linear.o $(LIBS)
+predict: tron.o linear.o predict.cpp blas/blas.a
+	$(CXX) $(CFLAGS) -o predict predict.cpp tron.o linear.o $(LIBS)
 
 tron.o: tron.cpp tron.h
 	$(CXX) $(CFLAGS) -c -o tron.o tron.cpp

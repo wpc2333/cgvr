@@ -1,7 +1,7 @@
 
 from subprocess import Popen, PIPE
-import numpy as np
-from sklearn import metrics
+# import numpy as np
+# from sklearn import metrics
 
 def run(command):
     process = Popen(command, stdout=PIPE, shell=True)
@@ -20,12 +20,12 @@ def grid_generate(valid_dict):
     #idx is reaching to the top of list or not.
     #print 'idx',idx_L
 
-    idx_L = [0]*len(valid_dict)
+    idx_L = [0]*len(valid_dict) #参数长度
 
     while True:
         is_finished = True
-        comb_tuple = {}
-        max_add_idx = -1
+        comb_tuple = {}         #中间变量
+        max_add_idx = -1        #最大值
 
         i = 0
         for k,S in valid_dict.items():

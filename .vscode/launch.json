@@ -12,13 +12,13 @@
             "args": ["loss",
                  "logistic", 
                  "task", 
-                 "converge", 
+                 "convergee", 
                  "name", 
                  "cgvr", 
                  "max_iter", 
                  "25", 
                  "m", 
-                 "5", 
+                 "50", 
                  "L", 
                  "1", 
                  "seed", 
@@ -26,7 +26,7 @@
                  "lr", 
                  "1e-3", 
                  "dt", 
-                 "w8a", 
+                 "covtype", 
                  "lambda", 
                  "1e-4"],
             "stopAtEntry": false,
@@ -46,9 +46,10 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "args": ["sqhinge","w8a"],
+            "args": ["sqhinge","a9a"],
             "program": "${file}",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "subProcess": true
         }
     ]
 }

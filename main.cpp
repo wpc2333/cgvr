@@ -277,7 +277,7 @@ mat sgd(mat &X, mat &Y)
 
   int d = X.n_cols;
   int n = X.n_rows;
-  mat w = randu(d, 1);
+  mat w = randu(d, 1);//随机选择开始点
   mat v = zeros(d, 1);
   double momentum = 0.9;
   double loss;
@@ -576,8 +576,12 @@ mat cgvr(mat &X, mat &Y)
       {
         g1 = gradient(x, x_t, y_t) - gradient(w, x_t, y_t) + u;
 
+        // grad_norm = g0.t() * g0;
+        // mat beta_pr = g1.t() * (g1 - g0) / (grad_norm(0) + 1e-6);   //PRP
+        grad_norm = p.t() * g0;
+        mat beta_pr = g1.t() * g1 / (grad_norm(0) + 1e-6);   //Dixon
         grad_norm = g0.t() * g0;
-        mat beta_pr = g1.t() * (g1 - g0) / (grad_norm(0) + 1e-6);
+        // mat beta_pr = g1.t() * g1 / (grad_norm(0) + 1e-6);   //FR
         double beta = max(beta_pr(0), 0.0);
         if (beta > 10)
           beta = 0;
@@ -764,7 +768,7 @@ double estimate_auc(mat &pred, mat &Y)
 
   double last_v = -1e8, v;
   int b_idx = 0, e_idx = 0, k;
-  vec ranks(n);
+  vec ranks(n); //创建一个列向量
   for (i = 0; i < n; i++)
   {
     ranks(i) = i + 1;

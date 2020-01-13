@@ -26,28 +26,33 @@ def split(fname):
     #print Y
     #print np.unique(Y)
 
-    f_va = open(dt_root + fname + '.v','wb')
-    f_tr = open(dt_root + fname + '.r','wb')
-    f_te = open(dt_root + fname + '.t','wb')
 
-    i = 0
-    for x,y in zip(X,Y):
-        if i%3 == 0:
-            f = f_te
-        elif i%5 == 0:
-            f = f_va
-        else:
-            f = f_tr
+    f_d = open(dt_root + fname + '.d','wb')
 
-        x = x.reshape(1,-1)
+    # f_va = open(dt_root + fname + '.v','wb')
+    # f_tr = open(dt_root + fname + '.r','wb')
+    # f_te = open(dt_root + fname + '.t','wb')
 
-        dump_svmlight_file(x,y,f,zero_based=False)
+    # i = 0
+    # for x,y in zip(X,Y):
+    #     if i%3 == 0:
+    #         f = f_te
+    #     elif i%5 == 0:
+    #         f = f_va
+    #     else:
+    #         f = f_tr
 
-        i += 1
+        # x = x.reshape(1,-1)
 
-    f_te.close()
-    f_va.close()
-    f_tr.close()
+    #     dump_svmlight_file(x,y,f,zero_based=False)
+
+    #     i += 1
+    dump_svmlight_file(X,Y.ravel(),f_d,zero_based=False)
+    f_d.close()
+
+    # f_te.close()
+    # f_va.close()
+    # f_tr.close()
 
 # datasets = []
 # for i in range(1,10):
@@ -57,7 +62,7 @@ def split(fname):
 #     datasets.append('w' + str(i) + 'a')
 
 #datasets = ['covtype']
-#datasets = ['a9a']
+datasets = ['a9a']
 datasets = ['a9a','covtype','w8a','ijcnn1','SUSY','HIGGS']
 
 for d in datasets:
